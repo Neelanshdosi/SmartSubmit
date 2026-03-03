@@ -114,7 +114,7 @@ function Landing() {
             </button>
           </NoiseBackground>
           <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)", marginTop: "12px", letterSpacing: "0.03em", fontWeight: 500 }}>
-            🔒 Currently in beta — limited to select users only.
+            Currently in beta — limited to selected users only.
           </p>
         </div>
 
