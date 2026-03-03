@@ -22,7 +22,13 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # Setup
 # -----------------------
 
-load_dotenv()
+load_dotenv(override=False)  # never override production env vars
+
+# ── Debug: confirm env vars are loaded ──
+_cid = os.getenv("GOOGLE_CLIENT_ID")
+_csec = os.getenv("GOOGLE_CLIENT_SECRET")
+print(f"🔑 GOOGLE_CLIENT_ID loaded: {'YES (' + _cid[:10] + '...)' if _cid else 'NO — None!'}")
+print(f"🔑 GOOGLE_CLIENT_SECRET loaded: {'YES' if _csec else 'NO — None!'}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
