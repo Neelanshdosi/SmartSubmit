@@ -113,6 +113,9 @@ function Landing() {
               Login with Google &rarr;
             </button>
           </NoiseBackground>
+          <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)", marginTop: "12px", letterSpacing: "0.03em", fontWeight: 500 }}>
+            🔒 Currently in beta — limited to select users only.
+          </p>
         </div>
 
         {/* Scroll down arrow */}
