@@ -34,9 +34,12 @@ async def lifespan(app: FastAPI):
     scheduler.shutdown(wait=False)
 
 app = FastAPI(lifespan=lifespan)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -138,7 +141,7 @@ def fix_db():
 
 @app.get("/login")
 async def login(request: Request):
-    redirect_uri = "http://127.0.0.1:8000/auth/callback"
+    redirect_uri = f"{BACKEND_URL}/auth/callback"
     return await oauth.google.authorize_redirect(
         request,
         redirect_uri,
@@ -153,14 +156,14 @@ async def auth_callback(request: Request):
         token = await oauth.google.authorize_access_token(request)
     except Exception as e:
         return RedirectResponse(
-            "http://localhost:5173/?error=oauth_failed"
+            f"{FRONTEND_URL}/?error=oauth_failed"
         )
     access_token = token["access_token"]
     refresh_token = token.get("refresh_token")
     user_info = token.get("userinfo")
     if not user_info or not user_info.get("email"):
         return RedirectResponse(
-            "http://localhost:5173/?error=no_email"
+            f"{FRONTEND_URL}/?error=no_email"
         )
 
     headers = {
@@ -300,7 +303,7 @@ async def auth_callback(request: Request):
         db.close()
 
     return RedirectResponse(
-        f"http://localhost:5173/dashboard?email={user_email}"
+        f"{FRONTEND_URL}/dashboard?email={user_email}"
     )
 
 @app.get("/dashboard")

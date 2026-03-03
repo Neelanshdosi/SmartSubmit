@@ -24,8 +24,10 @@ class ErrorBoundary extends Component {
 function Landing() {
   const containerRef = useRef(null);
 
+  const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
   const handleLogin = () => {
-    window.location.href = "http://127.0.0.1:8000/login";
+    window.location.href = `${API}/login`;
   };
 
   const scrollDown = () => {

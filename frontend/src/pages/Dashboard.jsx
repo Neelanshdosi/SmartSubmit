@@ -285,7 +285,7 @@ function Dashboard() {
             Please log in with Google to access the dashboard.
           </p>
           <a
-            href="http://127.0.0.1:8000/login"
+            href={`${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"}/login`}
             className="mt-4 inline-block rounded-lg bg-amber-600 px-4 py-2 text-white hover:bg-amber-700"
           >
             Log in
