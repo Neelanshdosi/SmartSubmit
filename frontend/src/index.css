@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mobile responsive overlay utility */
+@media (max-width: 767px) {
+    .responsive-overlay {
+        margin-left: 0 !important;
+        padding: 16px !important;
+    }
+}

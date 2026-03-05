@@ -1,4 +1,4 @@
-import { Component, useRef } from "react";
+import { Component, useRef, useState, useEffect } from "react";
 import Beams from "../components/Beams";
 import TextType from "../components/TextType";
 import VariableProximity from "../components/VariableProximity";
@@ -21,8 +21,20 @@ class ErrorBoundary extends Component {
   }
 }
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < breakpoint);
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 function Landing() {
   const containerRef = useRef(null);
+  const isMobile = useIsMobile();
 
   const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
@@ -54,14 +66,16 @@ function Landing() {
           </ErrorBoundary>
         </div>
 
-        {/* Top-right circular text */}
-        <div style={styles.topRight}>
-          <CircularText
-            text="GET*REMINDERS*WHEN*NEEDED*THE*MOST*"
-            onHover="speedUp"
-            spinDuration={18}
-          />
-        </div>
+        {/* Top-right circular text — hidden on mobile */}
+        {!isMobile && (
+          <div style={styles.topRight}>
+            <CircularText
+              text="GET*REMINDERS*WHEN*NEEDED*THE*MOST*"
+              onHover="speedUp"
+              spinDuration={18}
+            />
+          </div>
+        )}
 
         {/* Centre content */}
         <div style={styles.content}>
@@ -183,7 +197,7 @@ const styles = {
     cursor: "default",
   },
   heading: {
-    fontSize: "6rem",
+    fontSize: "clamp(2.5rem, 8vw, 6rem)",
     fontWeight: "300",
     color: "#ffffff",
     letterSpacing: "-0.04em",
@@ -198,14 +212,14 @@ const styles = {
     justifyContent: "center",
   },
   sub: {
-    fontSize: "1.35rem",
+    fontSize: "clamp(1rem, 2.5vw, 1.35rem)",
     color: "rgba(255,255,255,0.75)",
     fontWeight: "600",
     letterSpacing: "-0.01em",
   },
   button: {
-    padding: "14px 36px",
-    fontSize: "1.05rem",
+    padding: "clamp(10px, 2vw, 14px) clamp(24px, 4vw, 36px)",
+    fontSize: "clamp(0.9rem, 2vw, 1.05rem)",
     fontWeight: "600",
     cursor: "pointer",
     border: "none",
